@@ -161,7 +161,7 @@ function findCityByIPAddress() {
             if (data && data.ip) {
                 $('.suggested-city').text("You IP: " + data.ip);
                 
-                var ipmasked = data.ip.replace('.','_');
+                var ipmasked = data.ip.replace('.','_').replace('.','_').replace('.','_');
                 
                 $.ajax({
                     method: 'get',

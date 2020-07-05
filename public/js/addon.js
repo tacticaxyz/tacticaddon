@@ -73,6 +73,25 @@ AP.context.getContext(function(response){
         
         return city;
     };
+    
+    try {
+        $.ajax({
+            method: 'get',
+            url: getCityInfo + city,
+            contentType: "application/json; charset=utf-8",
+            success:  function (json) {
+                if (!json) {
+                    console.error("City not found in response!");
+                    return;
+                }
+                
+                console.log("Ajax Reached tactica server");
+                $('#assigneeDstOffset').text(data.gmtOffset);
+            }
+        });
+    } catch {
+        
+    }
 
     AP.request({
         url: '/rest/api/2/issue/' + response.jira.issue.key,
@@ -90,6 +109,7 @@ AP.context.getContext(function(response){
                         console.error("City not found in response!");
                         return;
                     }
+                    console.log("Jira issue Reached tactica server");
                     $('#assigneeDstOffset').text(data.gmtOffset);
                 }
             });
@@ -111,6 +131,8 @@ AP.context.getContext(function(response){
                     console.error("City not found in response!");
                     return;
                 }
+                
+                console.log("getTimeZone Reached tactica server");
                 $('#myDstOffset').text(json.gmtOffset);
             }
         });
