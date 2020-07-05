@@ -167,7 +167,6 @@ function findCityByIPAddress() {
                     method: 'get',
                     url: getCityByIp + ipmasked,
                     contentType: "application/javascript; charset=utf-8",
-                    dataType: "jsonp",
                     success: function (location) {
                         
                         if (!location || !location.cityName) {

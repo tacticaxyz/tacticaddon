@@ -6,23 +6,10 @@ AP.events.on('ISSUE_GLANCE_OPENED', function() {
     $("#fullpage").remove();
 });
 
-$('#assigneeDstOffset').bind('DOMSubtreeModified', function(){
-    
-    var myDstOffset = parseInt($('#myDstOffset').text());
-    var assigneeDstOffset = parseInt($('#assigneeDstOffset').text());
-    var diff = myDstOffset - assigneeDstOffset;
-    
-    if (diff < 0) {
-        diff = -1 * diff;
-    }
-    
-    $("#diff").text(diff);
-});
-
-
 AP.context.getContext(function(response){
 
     console.log("response.issue_key: ", response.jira.issue.key);
+
     
     $("#issuekey").text(response.jira.issue.key);
 
@@ -73,25 +60,6 @@ AP.context.getContext(function(response){
         
         return city;
     };
-    
-    try {
-        $.ajax({
-            method: 'get',
-            url: getCityInfo + city,
-            contentType: "application/json; charset=utf-8",
-            success:  function (json) {
-                if (!json) {
-                    console.error("City not found in response!");
-                    return;
-                }
-                
-                console.log("Ajax Reached tactica server");
-                $('#assigneeDstOffset').text(data.gmtOffset);
-            }
-        });
-    } catch {
-        
-    }
 
     AP.request({
         url: '/rest/api/2/issue/' + response.jira.issue.key,
@@ -99,7 +67,8 @@ AP.context.getContext(function(response){
         success: function(responseText){
             var item =  JSON.parse(responseText);
             var city = parseCityFromJiraTz(item.fields.assignee.timeZone);
-            $("#assigneetz").text(city);      
+            $("#assigneetz").text(city);
+            //tryFindOffset();
 
             AP.request({
                 url: getCityInfo + city,
@@ -109,8 +78,10 @@ AP.context.getContext(function(response){
                         console.error("City not found in response!");
                         return;
                     }
-                    console.log("Jira issue Reached tactica server");
-                    $('#assigneeDstOffset').text(data.gmtOffset);
+                    var cityData = JSON.parse(json);                
+                    console.log("Offset for " + city + " is " + cityData.gmtOffset);
+                    $('#assigneeDstOffset').text(cityData.gmtOffset);
+                    tryCalcDiff();
                 }
             });
         },
@@ -122,7 +93,8 @@ AP.context.getContext(function(response){
     AP.user.getTimeZone(function(timezone){
         var city = parseCityFromJiraTz(timezone);
         $("#mytz").text(city);
-        
+       //tryFindOffset();
+
         AP.request({
             url: getCityInfo + city,
             type: 'GET',
@@ -132,11 +104,44 @@ AP.context.getContext(function(response){
                     return;
                 }
                 
-                console.log("getTimeZone Reached tactica server");
-                $('#myDstOffset').text(json.gmtOffset);
+                var cityData = JSON.parse(json);                
+                console.log("Offset for " + city + " is " + cityData.gmtOffset);
+                $('#myDstOffset').text(cityData.gmtOffset);
+                tryCalcDiff();
             }
         });
     });
+    
+    var tryCalcDiff = function() {
+
+/*
+        var city1 = $("#assigneetz").text();
+        var city2 = $("#mytz").text();
+        if (!city1 || !city2) {
+        
+            console.log("WARNING: One of the cities is empty");
+            return;
+        }*/
+        
+        var myDstOffset = $("#myDstOffset").text();
+        var assigneeDstOffset = $("#assigneeDstOffset").text();
+        if (!myDstOffset || !assigneeDstOffset) {
+        
+            console.log("WARNING: One of the offsets is empty");
+            return;
+        }
+        
+        var myDstOffset = parseInt(myDstOffset);
+        var assigneeDstOffset = parseInt(assigneeDstOffset);
+        
+        var diff = myDstOffset - assigneeDstOffset;
+
+        if (diff < 0) {
+            diff = -1 * diff;
+        }
+
+        $("#diff").text(diff);
+    };
 });
         
 
