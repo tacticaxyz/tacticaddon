@@ -3,9 +3,6 @@ $(document).ready(function () {
     Initialize();
 });
 
-// TODO REMOVE
-var RegisteringURL = "https://ec2-54-87-29-211.compute-1.amazonaws.com/atlassian-connect.json";
-
 // Global variables.
 var isWorking = false;
 var citiesList =  [];
@@ -18,7 +15,7 @@ var cityFoundByIP = false;
 
 // Global constants.
 var MAX_CITIES = 6;
-var baseApiUrl = "https://ec2-54-87-29-211.compute-1.amazonaws.com";
+var baseApiUrl = "https://tactica.xyz";
 
 var getCityInfo = baseApiUrl + "/Cities/GetCityInfo/";
 var suggestCitiesApi = baseApiUrl + "/Cities/GetCitySuggested/";
