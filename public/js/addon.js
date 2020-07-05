@@ -1,4 +1,4 @@
-var baseApiUrl = "https://ec2-54-87-29-211.compute-1.amazonaws.com";
+var baseApiUrl = "https://tactica.xyz";
 var getCityInfo = baseApiUrl + "/Cities/GetCityInfo/";
 
 AP.events.on('ISSUE_GLANCE_OPENED', function() {
