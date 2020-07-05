@@ -1,0 +1,22 @@
+{
+    "cities": [
+        {
+            "woeid": "484907",
+            "country": "RU",
+            "city": "Taganrog",
+            "long": "38.896881",
+            "lat": "47.236172",
+            "gmtOffset": 3
+        },
+        {
+            "woeid": "5391959",
+            "country": "US",
+            "city": "San Francisco",
+            "long": "-122.419418",
+            "lat": "37.774929",
+            "gmtOffset": -8
+        },
+        {"woeid": "2643743","country": "GB","city": "London","long": "-0.12574","lat": "51.50853", "gmtOffset": 0},
+        {"woeid": "5128638","country": "US","city": "New York","long": "-75.499901","lat": "43.000351", "gmtOffset": -5}
+    ]
+}

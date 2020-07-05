@@ -1,0 +1,49 @@
+{{!< layout}}
+<header class="masthead">
+    <div class="inner">
+        <h3 class="masthead-brand">Find your co-workers on map</h3>
+        <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">Contact</a>
+        </nav>
+    </div>
+</header>     
+
+<main role="main"> 
+    <div>
+        <div>Issue key: <span id="issuekey"></span></div>
+        <div>My timezone: <span id="mytz"></span> (<span id="myDstOffset"></span>)</div>
+        <div>Assignee timezone: <span id="assigneetz"></span> (<span id="assigneeDstOffset"></span>)</div>
+        <div>Difference: <span id="diff"></span></div>
+    </div>
+    <div id="fullpage" class="row featurette">
+        <div class="col-3">
+            <!-- Panel for adding location -->
+            <div id="SelectedLocationContainer" class="SelectedLocationContainer">
+                <label for="city-location" class="col-form-label">Type city:</label>
+                <input type="text" class="city-location" id="city-location">
+                <span class="suggested-city"></span>
+            </div>
+            <!-- End Panel -->
+            <!-- Template is used for adding location by client javascript by copying this template. -->
+            <div id="SelectedLocation" class="selectedLocation" style="display: none;">
+                <div class="selectedContent" onclick="SetActiveLocation(this.parentNode);"></div>
+                <div class="selectedClose" onclick="CloseSelected(this.parentNode);">&#215;</div>
+            </div>
+            <!-- End tempalte -->
+        </div>
+        <div class="col mapblock">                        
+            <div id="mapid"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="mastfoot mt-auto">
+    <hr class="featurette-divider">
+    <div class="inner">
+        <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        <p>Built using Atlassian Connect add-on library <a href="https://bitbucket.org/atlassian/atlassian-connect-express/src/master/README.md#markdown-header-atlassian-connect-express-nodejs-package-for-express-based-atlassian-add-ons" target="_parent">atlassian-connect-express</a>.</p>
+    </div>
+</footer>
+

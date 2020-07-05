@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="ap-local-base-url" content="{{localBaseUrl}}">
+    
+    <title>{{title}}</title>
+    
+    <link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.8.12/css/aui.css" media="all">
+    <link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.8.12/css/aui-experimental.css" media="all">
+    <!--[if IE 9]><link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.8.12/css/aui-ie9.css" media="all"><![endif]-->
+    
+    <link rel="stylesheet" href="/css/addon.css" type="text/css" />
+    <link rel="stylesheet" href="/css/cover.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>  
+    <link rel="stylesheet" href="https://unpkg.com/@atlaskit/css-reset@2.0.0/dist/bundle.css" media="all">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/cover/">
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.12/js/aui-soy.js" type="text/javascript"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.12/js/aui.js" type="text/javascript"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.12/js/aui-datepicker.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.12/js/aui-experimental.js"></script>
+    <script src="https://connect-cdn.atl-paas.net/all.js" type="text/javascript"></script>
+  
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>    
+
+
+    <script src="/js/common.js"></script>
+    <script src="/js/city.js"></script>
+    <script src="/js/addon.js"></script>
+    
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="aui-page-hybrid">
+ <!-- <section id="content" role="main">-->
+    <section id="content" class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column ac-content">
+        {{{body}}}
+    </section>
+</body>
+</html>
