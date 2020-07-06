@@ -19,11 +19,11 @@ function CloseElement(element) {
 
 function ShowError(text) {
 
-    console.log("Warning: " + text);
+    console.log("TacTicA ERROR: " + text);
     alert(text);
 }
 
 function LogError(e) {
 
-    console.error("FindCoworkersApp event: " + e);
+    console.error("TacTicA ERROR: " + e);
 }

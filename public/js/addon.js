@@ -1,18 +1,30 @@
 var baseApiUrl = "https://tactica.xyz";
 var getCityInfo = baseApiUrl + "/Cities/GetCityInfo/";
+var tacticaContext = {
+    issueKey : null,
+    assigneeAccountId : null,
+    assigneeDisplayName : null,
+    assigneeTz : null,
+    assigneeDstOffset : null,
+    myTz : null,
+    myDstOffset : null,
+    tzDiff : null,
+    statuses : {},
+    overload : false,
+    underload : false,
+    noload : true
+};
 
-AP.events.on('ISSUE_GLANCE_OPENED', function() {
-
-    $("#fullpage").remove();
-});
+//AP.events.on('ISSUE_GLANCE_OPENED', function() {
+//});
 
 AP.context.getContext(function(response){
 
-    console.log("response.issue_key: ", response.jira.issue.key);
-
+    tacticaContext.issueKey = response.jira.issue.key;
     
-    $("#issuekey").text(response.jira.issue.key);
+    $("#issuekey").text(tacticaContext.issueKey);
 
+    // Workaround custom timezone names used in Jira (sometimes it uses city names, sometimes those custom TZs for the USA)
     var timeZonesCitiesMap = 
     {
         "AST": "Nova Scotia", // Canada
@@ -46,101 +58,184 @@ AP.context.getContext(function(response){
         var slashIndex = jiraTimeZone.indexOf('/');
         var city = 'San Francisco'; // Default.
         
-        if (slashIndex < 0) { // Slash not found, potentially it's timezone standard name.
-        
-            console.log("Looking in map");
-            city = findCityInMap(jiraTimeZone);
-            console.log("Found city in map: " + city);
-            
-        } else { // Slash found 
-            
+        if (slashIndex < 0) { // Slash not found, potentially it's timezone standard name.        
+            city = findCityInMap(jiraTimeZone);            
+        } else { // Slash found             
             city = jiraTimeZone.slice(slashIndex + 1);
-            console.log("Sliced city from jira timezone: " + city);
         }
         
         return city;
     };
 
-    AP.request({
-        url: '/rest/api/2/issue/' + response.jira.issue.key,
-        type: 'GET',
-        success: function(responseText){
-            var item =  JSON.parse(responseText);
-            var city = parseCityFromJiraTz(item.fields.assignee.timeZone);
-            $("#assigneetz").text(city);
-            //tryFindOffset();
+    // Find assignee for the current issue.
+    if (!tacticaContext.assigneeAccountId || !tacticaContext.assigneeTz || !tacticaContext.assigneeDstOffset) {
+        AP.request({
+            url: '/rest/api/2/issue/' + tacticaContext.issueKey,
+            type: 'GET',
+            success: function(responseText){
+                var item =  JSON.parse(responseText);
+
+                tacticaContext.assigneeAccountId = item.fields.assignee.accountId;
+                tacticaContext.assigneeDisplayName = item.fields.assignee.displayName;
+                tacticaContext.assigneeTz = parseCityFromJiraTz(item.fields.assignee.timeZone);
+                
+                $("#assigneetz").text(tacticaContext.assigneeTz);
+
+                // Find assignee timezone offset
+                AP.request({
+                    url: getCityInfo + tacticaContext.assigneeTz,
+                    type: 'GET',
+                    success:  function (json) {
+                        if (!json) {
+                            console.error("TacTicAddon WARNING: City not found in response!");
+                            return;
+                        }
+                        var cityData = JSON.parse(json);
+                        tacticaContext.assigneeDstOffset = cityData.gmtOffset;
+                        $('#assigneeDstOffset').text(tacticaContext.assigneeDstOffset);
+                        tryCalcDiff();
+                    }
+                });
+        
+                // Searching for issues assigned to a particular user
+                AP.request({
+                    url: '/rest/api/2/search?jql=assignee=' + tacticaContext.assigneeAccountId,
+                    type: 'GET',
+                    success: function(responseText){
+                        var queryResult =  JSON.parse(responseText);
+                        if (queryResult && queryResult.issues) {
+                            
+                            // Find statuses of tickets assigned to a person
+                            for (var index in queryResult.issues) {
+
+                                // Skip tickets that are done.
+                                var issue =  queryResult.issues[index];  
+                                var ticketStatus = issue.fields.status.name;
+
+                                if (ticketStatus.toLowerCase() === "done") {
+                                    continue;
+                                }
+                                
+                                if (!tacticaContext.statuses[ticketStatus]) {
+                                    tacticaContext.statuses[ticketStatus] = 1;
+                                } else {
+                                    tacticaContext.statuses[ticketStatus] = tacticaContext.statuses[ticketStatus] + 1; // parseInt(assigneeDstOffset);
+                                }
+                            }
+
+                            for (var key in tacticaContext.statuses) {
+                                $("<div style='margin-left:10px;'>" + key + ": <span>" + tacticaContext.statuses[key] + "</span></div>").appendTo('#wip');
+                            }
+                            
+                            // Analyze
+                            var statusMoreThanTwo = false;
+                            var overload = false;
+                            for (var key in tacticaContext.statuses) {
+                                if (tacticaContext.statuses[key] > 2) {
+                                    
+                                    if (statusMoreThanTwo) {
+                                        // More than 2 different status has more than 2 different tickets. Overload.
+                                        tacticaContext.overload = true;
+                                        tacticaContext.noload = false;
+                                        break;
+                                    }
+                                    
+                                    statusMoreThanTwo = true;
+                                }
+                            }
+                            
+                            if (!overload && statusMoreThanTwo) {
+                            
+                                tacticaContext.underload = true;
+                                tacticaContext.noload = false;
+                            }
+                            
+                            // Set lozenge Risk status
+                            var lozengeStatus = { type: 'lozenge', value: { label: 'No risk', type: 'success' } };
+                            $('#riskestimate').text("No risk");
+                            
+                            var factor = false;
+                            if (tacticaContext.tzDiff !== null && tacticaContext.tzDiff > 4) {
+                                factor = true;
+                            }
+                                
+                            if (tacticaContext.underload) {
+                                
+                                if (factor) {
+                                    lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
+                                    $('#riskestimate').text("High risk");
+                                } else {
+                                    lozengeStatus = { type: 'lozenge', value: { label: 'Medium risk', type: 'moved' } };
+                                    $('#riskestimate').text("Medium risk");
+                                }
+                            }
+                            if (tacticaContext.overload) {
+                                lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
+                                $('#riskestimate').text("High risk");
+                            }
+
+                            AP.request({
+                                url: "/rest/api/3/issue/" + tacticaContext.issueKey + "/properties/com.atlassian.jira.issue:TacTicAddon:assignments-risks-glance:status",
+                                type: 'PUT',
+                                contentType: 'application/json',
+                                data: JSON.stringify(lozengeStatus),
+                                success:  function () {
+                                    console.log("TacTicAddon: put status successfully!");
+                                },
+                                error:  function (error) {
+                                    console.error("TacTicAddon ERROR: " + JSON.stringify(error));
+                                }
+                            });
+                            
+                        }
+                    },
+                    error:  function(responseText){
+                        console.log("TacTicAddon ERROR: ", responseText);
+                    }
+                });
+            },
+            error:  function(responseText){
+                console.log("TacTicAddon ERROR: ", responseText);
+            }
+        });
+    }
+    
+    if (!tacticaContext.myDstOffset) {
+        AP.user.getTimeZone(function(timezone){
+            tacticaContext.myTz = parseCityFromJiraTz(timezone);
+            $("#mytz").text(tacticaContext.myTz);
 
             AP.request({
-                url: getCityInfo + city,
+                url: getCityInfo + tacticaContext.myTz,
                 type: 'GET',
                 success:  function (json) {
                     if (!json) {
-                        console.error("City not found in response!");
+                        console.error("TacTicAddon WARNING: City not found in response!");
                         return;
                     }
-                    var cityData = JSON.parse(json);                
-                    console.log("Offset for " + city + " is " + cityData.gmtOffset);
-                    $('#assigneeDstOffset').text(cityData.gmtOffset);
+                    
+                    var cityData = JSON.parse(json);
+                    tacticaContext.myDstOffset = cityData.gmtOffset;
+                    $('#myDstOffset').text(tacticaContext.myDstOffset);
                     tryCalcDiff();
                 }
             });
-        },
-        error:  function(responseText){
-            console.log("error: ", responseText);
-        }
-    });
-    
-    AP.user.getTimeZone(function(timezone){
-        var city = parseCityFromJiraTz(timezone);
-        $("#mytz").text(city);
-       //tryFindOffset();
-
-        AP.request({
-            url: getCityInfo + city,
-            type: 'GET',
-            success:  function (json) {
-                if (!json) {
-                    console.error("City not found in response!");
-                    return;
-                }
-                
-                var cityData = JSON.parse(json);                
-                console.log("Offset for " + city + " is " + cityData.gmtOffset);
-                $('#myDstOffset').text(cityData.gmtOffset);
-                tryCalcDiff();
-            }
         });
-    });
+    } else {
+        tryCalcDiff();
+    }
     
     var tryCalcDiff = function() {
 
-/*
-        var city1 = $("#assigneetz").text();
-        var city2 = $("#mytz").text();
-        if (!city1 || !city2) {
+        if (tacticaContext == null || tacticaContext.myDstOffset  == null || tacticaContext.assigneeDstOffset  == null) {
         
-            console.log("WARNING: One of the cities is empty");
-            return;
-        }*/
-        
-        var myDstOffset = $("#myDstOffset").text();
-        var assigneeDstOffset = $("#assigneeDstOffset").text();
-        if (!myDstOffset || !assigneeDstOffset) {
-        
-            console.log("WARNING: One of the offsets is empty");
             return;
         }
-        
-        var myDstOffset = parseInt(myDstOffset);
-        var assigneeDstOffset = parseInt(assigneeDstOffset);
-        
-        var diff = myDstOffset - assigneeDstOffset;
-
-        if (diff < 0) {
-            diff = -1 * diff;
+        tacticaContext.tzDiff = parseInt(tacticaContext.myDstOffset) - parseInt(tacticaContext.assigneeDstOffset);
+        if (tacticaContext.tzDiff < 0) {
+            tacticaContext.tzDiff = -1 * tacticaContext.tzDiff;
         }
-
-        $("#diff").text(diff);
+        $("#tzdiff").text(tacticaContext.tzDiff);
     };
 });
         

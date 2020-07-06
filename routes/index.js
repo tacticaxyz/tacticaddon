@@ -11,7 +11,13 @@ export default function routes(app, addon) {
         // Rendering a template is easy; the render method takes two params:
         // name of template and a json object to pass the context in.
         res.render('index', {
-            title: 'TacTicA'
+            title: 'TacTic Assignments'
+        });
+    });
+    
+    app.get('/map', addon.authenticate(), (req, res) => {
+        res.render('map', {
+            title: 'TacTic map'
         });
     });
 

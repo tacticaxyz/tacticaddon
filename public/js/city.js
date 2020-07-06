@@ -219,19 +219,20 @@ function assignCityControls() {
                 $.getJSON(suggestCitiesApi + cityName,
                     function(json) {
 
-                        if (!json || !json.cities) {
+                        if (!json) {
                         
                             LogError(DATA_NOT_AVAILABLE);
                             return;
                         }
 
                         var cities = [];
-                        for (var index = 0; index < json.cities.length; index++) {
+                        for (var index = 0; index < json.length; index++) {
 
-                            var geoObject = json.cities[index];
+                            var geoObject = json[index];
+                            geoObject.city = geoObject.cityName;
                             cities.push(geoObject);
                         }
-                        response(cities);
+                        response(json);
                 });
             }
         },

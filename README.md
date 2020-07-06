@@ -1,8 +1,10 @@
-# TacTicA JIRA addon
+# Tactic Assignments (TacTicA) JIRA addon
 
 ## Assign tickets with confidence about the progress.
 
-This JIRA addon allows teams distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues. It uses current and historical information available in JIRA to predict when the assigned person most likely can start work on the subject. 
+This JIRA addon allows teams distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues.
+Basically, it estimates the risks of every ticket assignment that you make.
+It uses current and historical information available in JIRA to predict when the assigned person most likely can start work on the subject.
 
 ## Prioritize work based on knowledge instead of guesses.
 
