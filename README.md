@@ -50,6 +50,7 @@ It will ensure that the item you have just assigned to a colleague has the best 
 * External API's used:
  * [GeoNames API](http://api.geonames.org/) for geocoding and timezones
  * [IpInfoDb](https://ipinfodb.com) service for finding IP address of the client
+ * [mapbox](https://www.mapbox.com/) API for working with maps
 
 ## Credits to
 
