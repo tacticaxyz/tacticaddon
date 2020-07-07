@@ -155,45 +155,7 @@ AP.context.getContext(function(response){
                                 tacticaContext.noload = false;
                             }
                             
-                            // Set lozenge Risk status
-                            var lozengeStatus = { type: 'lozenge', value: { label: 'No risk', type: 'success' } };
-                            $('#riskestimate').text("No risk");
-                            
-                            var factor = false;
-                            if (tacticaContext.tzDiff !== null && tacticaContext.tzDiff > 4) {
-                                factor = true;
-                            }
-                                
-                            if (tacticaContext.underload) {
-                                
-                                if (factor) {
-                                    lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
-                                    $('#riskestimate').text("High risk");
-                                } else {
-                                    lozengeStatus = { type: 'lozenge', value: { label: 'Medium risk', type: 'moved' } };
-                                    $('#riskestimate').text("Medium risk");
-                                }
-                            }
-                            if (tacticaContext.overload) {
-                                lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
-                                $('#riskestimate').text("High risk");
-                            }
-
-                            // Update status of Risk in ticket.
-                            AP.request({
-                                url: "/rest/api/3/issue/" + tacticaContext.issueKey + "/properties/com.atlassian.jira.issue:TacTicAddon:assignments-risks-glance:status",
-                                type: 'PUT',
-                                contentType: 'application/json',
-                                data: JSON.stringify(lozengeStatus),
-                                success:  function () {
-                                    console.log("TacTicAddon: put status successfully!");
-                                    //AP.jira.refreshIssuePage();
-                                },
-                                error:  function (error) {
-                                    console.error("TacTicAddon ERROR: " + JSON.stringify(error));
-                                }
-                            });
-                            
+                            setRiskStatus();                          
                         }
                     },
                     error:  function(responseText){
@@ -244,6 +206,8 @@ AP.context.getContext(function(response){
         }
         $("#tzdiff").text(tacticaContext.tzDiff);
 
+        setRiskStatus();
+
        // Update cities list for the map.
         var citiesList = [];
         var tacticaState =  JSON.parse(window.localStorage.getItem('tacticaState'));
@@ -293,6 +257,47 @@ AP.context.getContext(function(response){
             }
         }
     };
+    
+    var setRiskStatus = function() {
+        
+        // Set lozenge Risk status
+        var lozengeStatus = { type: 'lozenge', value: { label: 'No risk', type: 'success' } };
+        $('#riskestimate').text("No risk");
+        
+        var factor = false;
+        if (tacticaContext.tzDiff != null && tacticaContext.tzDiff > 4) {
+            factor = true;
+        }
+            
+        if (tacticaContext.underload) {
+            
+            if (factor) {
+                lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
+                $('#riskestimate').text("High risk");
+            } else {
+                lozengeStatus = { type: 'lozenge', value: { label: 'Medium risk', type: 'moved' } };
+                $('#riskestimate').text("Medium risk");
+            }
+        }
+        if (tacticaContext.overload) {
+            lozengeStatus = { type: 'lozenge', value: { label: 'High risk', type: 'removed' } };
+            $('#riskestimate').text("High risk");
+        }
+
+        // Update status of Risk in ticket.
+        AP.request({
+            url: "/rest/api/3/issue/" + tacticaContext.issueKey + "/properties/com.atlassian.jira.issue:TacTicAddon:assignments-risks-glance:status",
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(lozengeStatus),
+            success:  function () {
+                console.log("TacTicAddon: put status successfully!");
+            },
+            error:  function (error) {
+                console.error("TacTicAddon ERROR: " + JSON.stringify(error));
+            }
+        });
+    }
 });
         
 
