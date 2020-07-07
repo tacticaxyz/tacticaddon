@@ -23,6 +23,19 @@ export default function routes(app, addon) {
             title: 'TacTic map'
         });
     });
+    
+    app.get('/contacts', addon.authenticate(), (req, res) => {
+        res.render('contacts', {
+            title: 'TacTic contacts'
+        });
+    });
+    
+    app.get('/features', addon.authenticate(), (req, res) => {
+        res.render('features', {
+            title: 'TacTic features'
+        });
+    });
+    
     app.use(bodyParser.urlencoded({
         extended: true
     }));
