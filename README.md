@@ -24,13 +24,16 @@ It will ensure that the item you have just assigned to a colleague has the best 
 
 ## How to try
 
-1. Go to your Atlassian JIRA Project > select Apps > select Upload App > type in URL [https://tacticaddon.herokuapp.com](https://tacticaddon.herokuapp.com/) and click "Upload"
-
-2. After installation completed you will notice 2 things:
- * TacTicA menu item under Apps
-   * Click on it and you will see the page allowing you to show the distribution of your organization and co-workers around the world.
- * While looking to any Issue (ticket) find a clickable field (called "glance" in JIRA vocabulary) "Risk estimate of assignment:" with Globus icon.
-   * Click on it and you should be able to find some more information about the associated risks.
+1. Go to your Atlassian JIRA Project > select Apps > select Upload App 
+2. Type in URL [https://tacticaddon.herokuapp.com](https://tacticaddon.herokuapp.com/) and click "Upload"
+3. After installation completed you will notice 2 things:
+ * "TacTicA menu item under Apps
+   * While looking to any JIRA Issue (ticket) find a clickable field (called "glance" in JIRA vocabulary) "Risk estimate of assignment:" with Globus icon and associated "level of risk".
+   * "TacTicA map" menu item under global Apps menu
+   
+Try some straightforward use cases:
+1. Open any JIRA issue and click on "See why?" under "Risk estimate of assignment:". You should be able to see a little page with details about the associated risks: your and your teammate timezones, timezone differences and amount of issues in progress.
+2. Open "TacTicA map" from the global Apps menu and you should be able to see the list of cities/timezones together with appropriate points on the map. This will allow you to visualize the presence of your team in the world.
 
 ## How it works
 
@@ -58,3 +61,8 @@ It will ensure that the item you have just assigned to a colleague has the best 
 * [Atlassian Developers community](https://community.developer.atlassian.com/) for the information and docs.
 * [Jet Brains .NET Days Online 2020](https://pages.jetbrains.com/dotnet-days-2020/) for sharing knowledge about Rider IDE.
 * [A Cloud Gurus](https://acloud.guru/) for online courses about AWS platform.
+
+## Follow
+
+Source code is available on [TacTicA github](https://github.com/tacticaxyz)
+Author's other projects and personal page can be found here [Anton Yarkov](https://optiklab.github.io/)
