@@ -1,0 +1,44 @@
+{{!< layout}}
+
+<script src="/js/city.js"></script>
+
+<link rel="stylesheet" href="/css/cover.css" type="text/css" />
+
+<header class="masthead">
+    <div class="inner">
+        <h3 class="masthead-brand">TacTicA > Features</h3>
+        <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">Contact</a>
+        </nav>
+    </div>
+</header>     
+
+<main role="main"> 
+    <div class="row featurette">
+        <div>
+            <p>This JIRA addon allows teams distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues.</p>
+            <p>Basically, it estimates the risks of every ticket assignment that you make. But it's more appropriate to be used for the tasks that you expect to be executed urgently or really soon.</p>
+            <p>It uses current information available in JIRA to predict when the assigned person most likely can start work on the subject.</p>
+            
+            <p style="text-align: center;">Prioritize work based on knowledge instead of guesses.</p>
+            <p>It all starts with knowing the ticket number and assignee. Then this tool will automatically compare the assignee and your timezones and show the difference. It will also check the amount of work in progress for this person to consider his current load. It will analyze historical assignments and calculate potential capacity. It will ensure that the item you have just assigned to a colleague has the best potential to be executed soon. Otherwise, it will raise a red flag to let you know about the risks!</p>
+            <p>It doesn’t replace direct communication, but it fits distributed teams where it might be hard to communicate directly because of timezones or organizations that don’t have a lot of project managers to track people’s load and keep the balance. Most organizations that I know are eager to constant progress, want their teams to work like a Clock’s (tick tack tick tack) and to avoid overload, stress, and tons of meetings. This TacTicApp brings that into life.</p>
+        
+            <p style="text-align: center;">How it works</p>
+            <p>1. It calculates time zones differences between you and your co-worker (information that is available in JIRA by default but requires to be set up by everybody in the organization).</p>
+            <p>2. It looks for the number of items currently assigned to a person and in progress.</p>
+            <p>3. If you assign a ticket to a person that is under load (having work that is in progress) or too far from you, then JIRA addon will show a higher risk status for urgent tasks.</p>
+        </div>
+    </div>
+</main>
+
+<footer class="mastfoot mt-auto">
+    <hr class="featurette-divider">
+    <div class="inner">
+        <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        <p>Built using Atlassian Connect add-on library <a href="https://bitbucket.org/atlassian/atlassian-connect-express/src/master/README.md#markdown-header-atlassian-connect-express-nodejs-package-for-express-based-atlassian-add-ons" target="_parent">atlassian-connect-express</a>.</p>
+    </div>
+</footer>
+

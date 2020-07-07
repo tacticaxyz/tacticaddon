@@ -1,7 +1,7 @@
 {
     "key": "TacTicAddon",
     "name": "Tactic Assignments",
-    "description": "This JIRA addon allows teams distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues. Basically, it estimates the risks of every ticket assignment that you make. It uses current and historical information available in JIRA to predict when the assigned person most likely can start work on the subject. ",
+    "description": "This JIRA addon allows teams distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues. Basically, it estimates the risks of every ticket assignment that you make. But it's more appropriate to be used for the tasks that you expect to be executed urgently or really soon. It uses current information available in JIRA to predict when the assigned person most likely can start work on the subject. ",
     "baseUrl": "{{localBaseUrl}}",
     "vendor": {
         "name": "Anton Yarkov",

@@ -87,6 +87,41 @@ function addCityToList(city) {
         return;
     }
     
+    if (!city.woeid) {
+        $.getJSON(getCityInfo + city.city,
+            function(json) {
+
+                if (!json) {
+                
+                    LogError(DATA_NOT_AVAILABLE);
+                    return;
+                }
+
+                city.woeid = json.woeid;
+                city.lat = json.lat;
+                city.long = json.long;
+                city.country = json.country;
+                
+                console.log("TacTicA: Successfully retrieved full city info: " + city.woeid + ", " + city.city + ", " + city.country);
+                
+                // Check if no duplicates.
+                for (var i = 0; i < citiesList.length; i++) {
+
+                    if (city.woeid == citiesList[i].woeid) {
+                        
+                        ShowError(DUPLICATE_CITY);
+                        return;
+                    }
+                }
+                
+                addCityToListNoChecks(city);
+            });
+    }
+    
+    if (!city.woeid) {
+        return;
+    }
+    
     // Check if no duplicates.
     for (var i = 0; i < citiesList.length; i++) {
 
@@ -97,6 +132,11 @@ function addCityToList(city) {
         }
     }
     
+    addCityToListNoChecks(city);
+}
+
+function addCityToListNoChecks(city) {
+
     isWorking = true;
 
     try {
@@ -148,7 +188,7 @@ function loadInitialCities() {
             LogError(e);
         }
     }
-
+        
     findCityByIPAddress();
 }
 
@@ -215,7 +255,6 @@ function assignCityControls() {
             var cityName = request.term;
             if (cityName && cityName.length > 0) {
                 
-                // TODO
                 $.getJSON(suggestCitiesApi + cityName,
                     function(json) {
 

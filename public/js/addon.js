@@ -75,6 +75,11 @@ AP.context.getContext(function(response){
             success: function(responseText){
                 var item =  JSON.parse(responseText);
 
+                if (item.fields.assignee == null) {
+                    console.log("TacTicA WARNING: skip unassigned item");
+                    return;
+                }
+    
                 tacticaContext.assigneeAccountId = item.fields.assignee.accountId;
                 tacticaContext.assigneeDisplayName = item.fields.assignee.displayName;
                 tacticaContext.assigneeTz = parseCityFromJiraTz(item.fields.assignee.timeZone);
@@ -174,6 +179,7 @@ AP.context.getContext(function(response){
                                 $('#riskestimate').text("High risk");
                             }
 
+                            // Update status of Risk in ticket.
                             AP.request({
                                 url: "/rest/api/3/issue/" + tacticaContext.issueKey + "/properties/com.atlassian.jira.issue:TacTicAddon:assignments-risks-glance:status",
                                 type: 'PUT',
@@ -181,6 +187,7 @@ AP.context.getContext(function(response){
                                 data: JSON.stringify(lozengeStatus),
                                 success:  function () {
                                     console.log("TacTicAddon: put status successfully!");
+                                    //AP.jira.refreshIssuePage();
                                 },
                                 error:  function (error) {
                                     console.error("TacTicAddon ERROR: " + JSON.stringify(error));
@@ -236,6 +243,55 @@ AP.context.getContext(function(response){
             tacticaContext.tzDiff = -1 * tacticaContext.tzDiff;
         }
         $("#tzdiff").text(tacticaContext.tzDiff);
+
+       // Update cities list for the map.
+        var citiesList = [];
+        var tacticaState =  JSON.parse(window.localStorage.getItem('tacticaState'));
+    
+        if (!tacticaState) {
+            tacticaState = citiesList;
+        }
+        
+        if (tacticaState) {
+
+            var found = false;
+            var updateStorage = false;
+            for (var i = 0; i < tacticaState.length; i++) {
+                if (tacticaContext.myTz === tacticaState[i].city) {
+                    found = true;
+                    console.log("TacTicAddon: no need to add city: " + tacticaContext.myTz);
+                    break;
+                }
+            }
+            
+            if (!found) {
+                updateStorage = true;
+                var city = {};
+                city.city = tacticaContext.myTz;
+                tacticaState.push(city);
+            }
+            
+            var found = false;
+            for (var i = 0; i < tacticaState.length; i++) {
+                if (tacticaContext.assigneeTz === tacticaState[i].city) {
+                    found = true;
+                    console.log("TacTicAddon: no need to add city: " + tacticaContext.assigneeTz);
+                    break;
+                }
+            }
+            
+            if (!found) {
+                updateStorage = true;
+                var city = {};
+                city.city = tacticaContext.assigneeTz;
+                tacticaState.push(city);
+            }            
+            
+            if (updateStorage == true) {
+                window.localStorage.setItem('tacticaState', JSON.stringify(tacticaState));
+                console.log("TacTicA: updated state in localstorage");
+            }
+        }
     };
 });
         
