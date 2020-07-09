@@ -43,6 +43,21 @@ Try some straightforward use cases:
 
 3. If you assign a ticket to a person that is under load (having work that is in progress) or too far from you, then JIRA addon will show a higher risk status for urgent tasks.
 
+## Building pre-requisites
+
+Make sure you have installed:
+1. NodeJS (at least version 12)
+Depending on the environment and conditions you might need to have [ngrok](https://developer.atlassian.com/cloud/jira/platform/getting-started/) or [Heroku toolbelt](https://bitbucket.org/atlassian/atlassian-connect-express/src/master/README.md) installed.
+
+## Building instructions
+
+1. Execute commands one by one (example for Windows):
+$> heroku apps:create tacticaddon
+$> heroku addons:add heroku-postgresql:hobby-dev --app tacticaddon
+$> git remote add heroku git@heroku.com:tacticaddon.git
+$> git push heroku master
+2. Go to Atlasissan > JIRA > Manage apps > Register your app available by Heroku's url.
+
 ## Technologies used
 
 * AWS Cloud
