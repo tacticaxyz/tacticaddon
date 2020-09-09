@@ -64,7 +64,7 @@ $> git push heroku master
 * Heroku Cloud
 * Docker containers
 * This Front-End part is built with native JavaScript and using Atlassian Connect add-on library [atlassian-connect-express](https://bitbucket.org/atlassian/atlassian-connect-express/src/master/README.md#markdown-header-atlassian-connect-express-nodejs-package-for-express-based-atlassian-add-ons).
-* [Back-end API](https://github.com/tacticaxyz/tacticaapi) is built with .NET Core 3.1, C#, Docker and AWS platform (ECS, Fargate, EC2, Route53 etc.).
+* [Back-end API](https://github.com/optiklab/tacticaapi) is built with .NET Core 3.1, C#, Docker and AWS platform (ECS, Fargate, EC2, Route53 etc.).
 * External API's used:
  * [GeoNames API](http://api.geonames.org/) for geocoding and timezones
  * [IpInfoDb](https://ipinfodb.com) service for finding IP address of the client
@@ -79,5 +79,4 @@ $> git push heroku master
 
 ## Follow
 
-Source code is available on [TacTicA github](https://github.com/tacticaxyz)
-Author's other projects and personal page can be found here [Anton Yarkov](https://optiklab.github.io/)
+Source code is available on TacTicA GitHub repos for [Front-End](https://github.com/optiklab/tacticaddon) and [Back-End](https://github.com/optiklab/tacticapi).
