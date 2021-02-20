@@ -2,25 +2,25 @@
 
 ## Problem
 
-Teams distributed over the world need appropriate tools for their work. Many companies use JIRA for task tracking. Team leads or product managers work with their teams from any locations in the world. Asynchronous communication available via tools like JIRA is essential to make these teams efficient.\
+Teams distributed over the world need appropriate tools for their work. Many companies use JIRA for task tracking. Team leads or product managers work with their teams from any locations in the world. Asynchronous communication available via tools like JIRA is essential to make these teams efficient.
 
-However, when a team lead assigns a ticket to his colleague, he has a lack of feedback or response and not sure if it was set into the tasks queue or hanged without being noticed.\
-I know that many people solve this by pinging each other in messengers or face-to-face communication to fulfill this gap. And developers know how destructive such distractions are.\
+However, when a team lead assigns a ticket to his colleague, he has a lack of feedback or response and not sure if it was set into the tasks queue or hanged without being noticed.
+I know that many people solve this by pinging each other in messengers or face-to-face communication to fulfill this gap. And developers know how destructive such distractions are.
 
-One way to improve this situation is to give the team leads an appropriate tool to predict how assignments will work (or if it's not - why it's not working as expected).\
+One way to improve this situation is to give the team leads an appropriate tool to predict how assignments will work (or if it's not - why it's not working as expected).
 
-I developed TacTic Assingments JIRA add-on as part of [Atlassian Codegeist 2020 hackathon](https://codegeist.devpost.com/) to allow teams that are distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues.\
+I developed TacTic Assingments JIRA add-on as part of [Atlassian Codegeist 2020 hackathon](https://codegeist.devpost.com/) to allow teams that are distributed over the world to be more efficient by making work timelines of every JIRA issue more transparent to all colleagues.
 
-It doesn’t replace direct communication, but it avoids wrong patterns of communications and fits distributed teams where it might be hard to communicate directly because of timezones. It might also fit for organizations that don’t have a lot of project managers to track people’s load. Most organizations that I know are eager to constant progress, want their teams to work like a Clock’s (tick tack tick tack) and to avoid overload, stress, and tons of meetings. This TacTic Assignments add-on brings that into life.\
+It doesn’t replace direct communication, but it avoids wrong patterns of communications and fits distributed teams where it might be hard to communicate directly because of timezones. It might also fit for organizations that don’t have a lot of project managers to track people’s load. Most organizations that I know are eager to constant progress, want their teams to work like a Clock’s (tick tack tick tack) and to avoid overload, stress, and tons of meetings. This TacTic Assignments add-on brings that into life.
 
 ## Assign tickets with confidence about the progress.
 
-Basically, TacTic Assingments add-on estimates the risks of every ticket assignment that you make. But it's more appropriate to be used for the tasks that you expect to be executed urgently or really soon.\
+Basically, TacTic Assingments add-on estimates the risks of every ticket assignment that you make. But it's more appropriate to be used for the tasks that you expect to be executed urgently or really soon.
 It uses current information available in JIRA (work in progress already assigned, timezones, etc.) to predict when the assigned person most likely can start work on the subject.
 
-It all starts with knowing the ticket number and assignee. Then this tool will automatically compare the assignee and your timezones and show the difference.\
-It will also check the amount of work in progress for this person to consider his current load.\
-It will ensure that the item you have just assigned to a colleague has the best potential to be executed soon. Otherwise, it will raise a red status to let you know about the risks!\
+It all starts with knowing the ticket number and assignee. Then this tool will automatically compare the assignee and your timezones and show the difference.
+It will also check the amount of work in progress for this person to consider his current load.
+It will ensure that the item you have just assigned to a colleague has the best potential to be executed soon. Otherwise, it will raise a red status to let you know about the risks!
 
 ## How to try
 
